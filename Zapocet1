@@ -1,0 +1,10 @@
+#!/bin/bash
+
+search="$@"
+search=$( echo $search | tr ' ' '+' )
+
+urlSearch="https://arxiv.org/search/?query=$search&searchtype=all&source=header"
+
+wget -q $urlSearch -O ARXIV.html
+
+tr -d '\n' < ARXIV.html | tr '<' '\n' | grep '^a' | tr '>' '\n' | grep 'arXiv' | grep -v 'About' | cut -c 7- | sort
